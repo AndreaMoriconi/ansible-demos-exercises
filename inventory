@@ -1,0 +1,11 @@
+kube_master ansible_host=10.0.0.11
+kube_node2 ansible_host=10.0.0.2
+ansible_test1 ansible_host=10.0.0.3
+ansible_test2 ansible_host=10.0.0.4
+
+[kubecluster]
+kube_master
+kube_node2
+
+[ansible_test]
+ansible_test[1:2]
