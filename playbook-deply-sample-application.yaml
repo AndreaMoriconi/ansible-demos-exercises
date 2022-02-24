@@ -13,7 +13,7 @@
 
 - name: "Deploy and configure database"
   hosts: ansible_test2
-  task:
+  tasks:
     - name: install MariaDB
       dnf:
         name: mariadb-server
@@ -45,6 +45,7 @@
         priv: '*.*:ALL,GRANT'
     - name: Load Product Inventory Information to database
       shell: mysql < db-load-script.sql
+
 
 
 
