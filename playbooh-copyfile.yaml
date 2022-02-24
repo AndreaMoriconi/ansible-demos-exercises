@@ -1,0 +1,7 @@
+- name: Copy file to target servers
+  hosts: ansible_test
+  tasks:
+  - name: Copy file
+    copy:
+      src: /home/andrea/ansible/copy_tets_file.txt  #<--source file on ansible host local machine
+      dest: /tmp/testfiles     #<--desired destination on target servers 
