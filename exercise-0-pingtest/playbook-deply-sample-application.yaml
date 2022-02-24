@@ -1,0 +1,51 @@
+- name: "pre-requisites: install firewall"
+  hosts: ansible_test
+  tasks:
+    - name: install firewalld
+      dnf: 
+        name: firewalld
+        state: latest
+    - name: start firewalld service
+      service:
+        name: firewalld
+        enabled: yes
+        state: started
+
+- name: "Deploy and configure database"
+  hosts: ansible_test2
+  task:
+    - name: install MariaDB
+      dnf:
+        name: mariadb-server
+        state: installed
+    - name: start mariadb-server
+      service:
+        name: mariadb
+        enabled: yes
+        state: started 
+    - name: configure firewall for the database
+      ansible.posix.firewalld:
+        port: 3306/tcp
+        state: enabled
+        zone: pubblic
+        permanent: yes
+        immediate: yes
+      service:
+        name: mariadb
+        state: reloaded
+    - name: configre database
+      community.mysql.mysql_db:
+        name: ecomdb
+        state: present
+      community.mysql.mysql_user:
+        name: ecomuser
+        host: 10.0.0.4
+        password: ecompassword
+        state: present
+        priv: '*.*:ALL,GRANT'
+    - name: Load Product Inventory Information to database
+      shell: mysql < db-load-script.sql
+
+
+
+
